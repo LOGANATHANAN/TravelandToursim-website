@@ -18,7 +18,7 @@ app.use(express.urlencoded({extended:false}))
 
 app.use(express.static(path.join(__dirname + '/public')));
 
-app.use(session({
+/*app.use(session({
     secret: "keyboard cat",
     resave:true,
     saveUninitialized:true
@@ -30,7 +30,7 @@ app.use(function(req,res,next){
     next();
 });
 
-const { body, validationResult } = require('express-validator');
+//const { body, validationResult } = require('express-validator');
 
 /*app.use(expressValidator({
     errorFormatter:function(param,msg,value){
@@ -49,12 +49,17 @@ const { body, validationResult } = require('express-validator');
         };
         }
 }));*/
+app.get('/',(req,res)=>{
+    res.sendFile(path.join(__dirname+'/index.html'));
+});
+
+app.use('/signup',require('./routes/users.js'));
 
 app.get('/dashboard',(req,res)=>{
     res.sendFile(path.join(__dirname +'/public/dashboard.html'));
 })
 
-app.use('/signup',require('./routes/users.js'))
-app.listen(process.env.PORT || 5001, function () {
-    console.log("SERVER 5001 HAS STARTED");
+
+app.listen(process.env.PORT || 5000, function () {
+    console.log("SERVER 5000 HAS STARTED");
 });

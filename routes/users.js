@@ -6,7 +6,12 @@ const flash=require('connect-flash');
 
 let user=require('../models/user');
 const bcrypt=require('bcryptjs');
-router.post('/signup',(req,res)=>{
+
+router.get('/',(req,res)=>{
+    res.sendFile(path.join(__dirname,'..','/signup.html'));
+})
+
+router.post('/',(req,res)=>{
     const name=req.body.name;
     const email=req.body.email;
     const password=req.body.password;
@@ -21,7 +26,7 @@ router.post('/signup',(req,res)=>{
     let errors=req.validationErrors();
 
     if(errors){
-        res.sendFile('./public/signup.html');
+        res.direct('/');
     
     }
     else{
@@ -46,7 +51,7 @@ router.post('/signup',(req,res)=>{
                     else{
                         console.log('Data has been pushed');
                         req.flash('success','You have registred sucessfully');
-                        res.redirect('./pubic/dashboard.html');
+                        res.redirect('../dashboard');
                     }
                });
            }
