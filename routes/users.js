@@ -1,9 +1,8 @@
 const express= require('express')
+const path=require('path');
+//const expressValidator=require('express-validator');
 const router=express.Router();
 const mongoose=require('mongoose');
-const expressValidator=require('express-validator');
-const flash=require('connect-flash');
-
 let user=require('../models/user');
 const bcrypt=require('bcryptjs');
 
@@ -16,26 +15,12 @@ router.post('/',(req,res)=>{
     const email=req.body.email;
     const password=req.body.password;
     const password2=req.body.password2;
-    
-    req.checkBody('name','Name is required').notEmpty();
-    req.checkBody('email','Email is requires').notEmpty();
-    req.checkBody('email','Email is not valid').isEmail();
-    req.checkBody('password','Passord is required').notEmpty();
-    req.checkBody('password2','Password do not match').equals(req.body.password);
 
-    let errors=req.validationErrors();
-
-    if(errors){
-        res.direct('/');
-    
-    }
-    else{
     let newuser= new user({
         name:name,
         email:email,
         password:password
     });
-}
    bcrypt.genSalt(10,function(err,salt){
        bcrypt.hash(newuser.password,salt,function(err,hash){
            if(err){
@@ -50,8 +35,7 @@ router.post('/',(req,res)=>{
                     }
                     else{
                         console.log('Data has been pushed');
-                        req.flash('success','You have registred sucessfully');
-                        res.redirect('../dashboard');
+                        res.redirect('/dashboard');
                     }
                });
            }
